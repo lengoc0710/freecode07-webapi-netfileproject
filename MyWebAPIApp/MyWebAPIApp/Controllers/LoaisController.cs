@@ -20,6 +20,7 @@ namespace MyWebAPIApp.Controllers
         {
             _context = context;
         }
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -33,6 +34,7 @@ namespace MyWebAPIApp.Controllers
                 return BadRequest();
             }
         }
+
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -46,6 +48,8 @@ namespace MyWebAPIApp.Controllers
                 return NotFound();
             }
         }
+
+
         [HttpPost]
         [Authorize]
         public IActionResult CreateNew(LoaiModel model)
@@ -65,7 +69,8 @@ namespace MyWebAPIApp.Controllers
                 return BadRequest();
             }
         }
-            [HttpPut("{id}")]
+
+        [HttpPut("{id}")]
         public IActionResult UpdateLoaiById(int id, LoaiModel model)
         {
             var loai = _context.Loais.SingleOrDefault(lo => lo.MaLoai == id);
@@ -80,6 +85,7 @@ namespace MyWebAPIApp.Controllers
                 return NotFound();
             }
         }
+
         [HttpDelete("{id}")]
         public IActionResult DeleteLoaiById(int id)
         {
@@ -96,4 +102,5 @@ namespace MyWebAPIApp.Controllers
             }
         }
     }
-}
+    }
+

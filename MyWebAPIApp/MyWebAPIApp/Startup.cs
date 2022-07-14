@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyWebAPIApp.Data;
+using MyWebAPIApp.Models;
 using MyWebAPIApp.Service;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,9 @@ namespace MyWebAPIApp
                 option.UseSqlServer(Configuration.GetConnectionString("MyDb"));
             });
             services.AddScoped<ILoaiRepository, LoaiRepositoryInMemory>();
+            services.AddScoped<IHangHoaRepository, HangHoaRepository>();
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
 
             var secretKey = Configuration["AppSettings:SecretKey"];
             var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
@@ -61,7 +65,55 @@ namespace MyWebAPIApp
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyWebAPIApp", Version = "v1" });
-            });
+                //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                //{
+                //    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n
+                //      Enter 'Bearer' [space] and then your token in the text input below.
+                //      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                //    Name = "Authorization",
+                //    In = ParameterLocation.Header,
+                //    Type = SecuritySchemeType.ApiKey,
+                //    Scheme = "Bearer"
+                //});
+
+                //c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                //  {
+                //    {
+                //      new OpenApiSecurityScheme
+                //      {
+                //        Reference = new OpenApiReference
+                //          {
+                //            Type = ReferenceType.SecurityScheme,
+                //            Id = "Bearer"
+                //          },
+                //          Scheme = "oauth2",
+                //          Name = "Bearer",
+                //          In = ParameterLocation.Header,
+                //        },
+                //        new List<string>()
+                //      }
+                //    });
+
+        //        var secretKey = Configuration["AppSettings:SecretKey"];
+        //    var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
+
+        //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+        //    {
+        //        opt.TokenValidationParameters = new TokenValidationParameters
+        //        {
+        //            //Self-provided token
+        //            ValidateIssuer = false,
+        //            ValidateAudience = false,
+
+        //            //Sign to token 
+        //            ValidateIssuerSigningKey = true,
+        //            IssuerSigningKey = new SymmetricSecurityKey(secretKeyBytes),
+
+        //            ClockSkew = TimeSpan.Zero
+        //        };
+        //    });
+
+        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,6 +130,7 @@ namespace MyWebAPIApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

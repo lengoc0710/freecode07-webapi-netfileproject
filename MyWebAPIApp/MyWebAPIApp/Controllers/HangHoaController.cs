@@ -43,7 +43,7 @@ namespace MyWebAPIApp.Controllers
             var hanghoa = new HangHoa
             {
                 MaHangHoa = Guid.NewGuid(),
-                TenHangHoa = hangHoaVm.TenHangHoa,
+                Tenhh = hangHoaVm.Tenhh,
                 DonGia = hangHoaVm.DonGia
 
           };
@@ -67,7 +67,7 @@ namespace MyWebAPIApp.Controllers
                 {
                     return BadRequest();
                 }
-                HangHoa.TenHangHoa = HangHoaEdit.TenHangHoa;
+                HangHoa.Tenhh = HangHoaEdit.Tenhh;
                 HangHoa.DonGia = HangHoaEdit.DonGia;
                 return Ok();
 
